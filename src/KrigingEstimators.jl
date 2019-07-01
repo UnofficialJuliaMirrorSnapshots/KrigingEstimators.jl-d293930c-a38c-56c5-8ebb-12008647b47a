@@ -4,21 +4,34 @@
 
 module KrigingEstimators
 
-using Reexport
-using LinearAlgebra
-using Combinatorics: multiexponents
+using GeoStatsBase
+using Variography
 
-# export variogram models
-@reexport using Variography
+using LinearAlgebra: Factorization, lu, cholesky, issuccess, ⋅
+using Distances: Euclidean
+using Distributions: Normal
+using Combinatorics: multiexponents
+using StaticArrays: MVector
+
+import GeoStatsBase: fit, predict, status
+import GeoStatsBase: preprocess, solve, solve_single
 
 include("estimators.jl")
 
+include("solvers/kriging.jl")
+include("solvers/sgsim.jl")
+
 export
+  # estimators
   KrigingEstimator,
   SimpleKriging,
   OrdinaryKriging,
   UniversalKriging,
   ExternalDriftKriging,
-  fit, status, predict, weights
+  fit, predict, status, weights,
+
+  # solvers
+  Kriging, KrigingParam,
+  SeqGaussSim, SeqGaussSimParam
 
 end
